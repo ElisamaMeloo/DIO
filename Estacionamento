@@ -1,0 +1,88 @@
+using System;
+using System.Collections.Generic;
+
+class Veiculo
+{
+    public string Placa { get; set; }
+    public DateTime HoraEntrada { get; set; }
+}
+
+class Estacionamento
+{
+    private List<Veiculo> veiculosEstacionados;
+    private decimal valorHora;
+
+    public Estacionamento(decimal valorHora)
+    {
+        this.valorHora = valorHora;
+        veiculosEstacionados = new List<Veiculo>();
+    }
+
+    public void AdicionarVeiculo(string placa)
+    {
+        Veiculo veiculo = new Veiculo
+        {
+            Placa = placa,
+            HoraEntrada = DateTime.Now
+        };
+
+        veiculosEstacionados.Add(veiculo);
+        Console.WriteLine($"Veículo com placa {placa} adicionado ao estacionamento.");
+    }
+
+    public void RemoverVeiculo(string placa)
+    {
+        Veiculo veiculo = veiculosEstacionados.Find(v => v.Placa == placa);
+
+        if (veiculo != null)
+        {
+            TimeSpan tempoEstacionado = DateTime.Now - veiculo.HoraEntrada;
+            decimal valorCobrado = CalcularValor(tempoEstacionado);
+
+            Console.WriteLine($"Veículo com placa {placa} removido. Valor cobrado: {valorCobrado:C}");
+            veiculosEstacionados.Remove(veiculo);
+        }
+        else
+        {
+            Console.WriteLine($"Veículo com placa {placa} não encontrado no estacionamento.");
+        }
+    }
+
+    public void ListarVeiculos()
+    {
+        Console.WriteLine("Veículos estacionados:");
+
+        foreach (var veiculo in veiculosEstacionados)
+        {
+            Console.WriteLine($"Placa: {veiculo.Placa}, Hora de entrada: {veiculo.HoraEntrada}");
+        }
+    }
+
+    private decimal CalcularValor(TimeSpan tempoEstacionado)
+    {
+        int horasEstacionado = (int)Math.Ceiling(tempoEstacionado.TotalHours);
+        return horasEstacionado * valorHora;
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        // Criar um estacionamento com um valor de R$ 5,00 por hora
+        Estacionamento estacionamento = new Estacionamento(5.00M);
+
+        // Adicionar veículos
+        estacionamento.AdicionarVeiculo("ABC1234");
+        estacionamento.AdicionarVeiculo("XYZ9876");
+
+        // Listar veículos
+        estacionamento.ListarVeiculos();
+
+        // Remover veículo
+        estacionamento.RemoverVeiculo("ABC1234");
+
+        // Listar veículos após a remoção
+        estacionamento.ListarVeiculos();
+    }
+}
