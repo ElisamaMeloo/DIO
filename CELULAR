@@ -1,0 +1,63 @@
+// Criar uma classe abstrata Celular para modelar o comportamento comum a todos os celularares:
+public abstract class Celular
+{
+    public string Marca { get; set; }
+    public string Modelo { get; set; }
+    public int Memoria { get; set; }
+    public string Processador { get; set; }
+
+    // Construtor para a classe abstrata Celular:
+    public Celular(string marca, string modelo, int memoria, string processador)
+    {
+        Marca = marca;
+        Modelo = modelo;
+        Memoria = memoria;
+        Processador = processador;
+    }
+
+    // Definir um método abstrato que será implementado pelas subclasses:
+    public abstract void ExibirInfo();
+}
+
+// Criar uma classe específica CelularApple que herda de Celular:
+public class CelularApple : Celular
+{
+    public CelularApple(string marca, string modelo, int memoria, string processador)
+        : base(marca, modelo, memoria, processador)
+    {
+    }
+
+    // Implementar o método abstrato ExibirInfo() específico para celulares Apple:
+    public override void ExibirInfo()
+    {
+        Console.WriteLine("Celular: {0} {1}", Marca, Modelo);
+        Console.WriteLine("Memória: {0} GB", Memoria);
+        Console.WriteLine("Processador: {0}", Processador);
+        Console.WriteLine("Marca: {0}", Marca);
+    }
+}
+
+// Criar uma classe específica CelularSamsung que herda de Celular:
+public class CelularSamsung : Celular
+{
+    public CelularSamsung(string marca, string modelo, int memoria, string processador)
+        : base(marca, modelo, memoria, processador)
+    {
+    }
+
+    // Implementar o método abstrato ExibirInfo() específico para celulares Samsung:
+    public override void ExibirInfo()
+    {
+        Console.WriteLine("Celular: {0} {1}", Marca, Modelo);
+        Console.WriteLine("Memória Interna: {0} GB", Memoria);
+        Console.WriteLine("Processador: {0}", Processador);
+        Console.WriteLine("Marca: {0}", Marca);
+    }
+}
+
+// No método Main():
+Celular celular1 = new CelularApple("Apple", "iPhone 12", 64, "A14 Bionic");
+Celular celular2 = new CelularSamsung("Samsung", "Galaxy S21", 128, "Exynos 2100");
+
+celular1.ExibirInfo();
+celular2.ExibirInfo();
